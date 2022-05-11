@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  db:
+    image: mysql:8.0.29
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    volumes:
+      - db-data:/var/lib/mysql
+    ports:
+      - 3306:3306
+  web:
+    build: .
+    environment:
+      DATABASE_HOST: db
+      DATABASE_USERNAME: root
+      DATABASE_PASSWORD: ""
+    volumes:
+      - .:/opt/app
+    ports:
+      - 3000:3000
+    command: bundle exec rails s -p 3000 -b "0.0.0.0"
+    depends_on:
+      - db
+
+volumes:
+  db-data:

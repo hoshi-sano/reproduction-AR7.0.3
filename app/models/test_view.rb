@@ -1,0 +1,2 @@
+class TestView < ApplicationRecord
+end
